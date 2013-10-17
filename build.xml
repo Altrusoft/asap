@@ -1,0 +1,229 @@
+<?xml version="1.0"?>
+<!--
+ * Description: 
+ * Author: Hans Höök, Altrusoft AB
+ * Created: 2013-06-07
+-->
+<project name="Alfresco Play Integration - repo" default="package-amp" basedir=".">
+
+	<property name="module.name" value="se_altrusoft_alfplay_repo" />
+	
+	<!-- Allow override properties -->
+	<property file="build.properties" />
+	<property file="${user.home}/build.properties" />
+
+	<!-- Additional property values. Generally should not be overridden -->
+	<property name="config.dir" value="${basedir}/config" />
+	<property name="config.includes" value="**/*.*" />
+	<property name="config.excludes" value="**/module.properties **/.*" />
+
+	<property name="source.dir" value="${basedir}/source/java" />
+
+	<property name="build.dir" value="${basedir}/build" />
+
+	<property name="classes.dir" value="${build.dir}/classes" />
+
+	<property name="build.jar.dir" value="${build.dir}/lib" />
+	<property name="jar.name" value="${module.name}.jar" />
+	<property name="jar.file" value="${build.jar.dir}/${jar.name}"/>
+
+	<property name="build.amp.dir" value="${build.dir}/amp" />
+	<property name="amp.file.properties" value="${config.dir}/alfresco/module/se_altrusoft_alfplay/module.properties" />
+
+	<property name="amp.file.mappings" value="file-mapping.properties" />
+
+	<property name="dist.dir" value="${build.dir}/dist" />
+	<property name="amp.name" value="${module.name}.amp" />
+	<property name="amp.file" value="${dist.dir}/${amp.name}"/>
+
+	<!-- Tomcat properties to reload web scripts or the manager webapp -->
+	<property name="tomcat.url" value="http://localhost:8080" />
+	<property name="tomcat.repo.url" value="${tomcat.url}" />
+	<!-- Tomcat properties to reload web scripts -->
+	<property name="webapp.alfresco.path" value="/alfresco" />
+	<property name="post.verbose" value="false" />
+	<property name="repo.admin.username" value="admin" />
+	<property name="repo.admin.password" value="123456" />
+	<property name="repo.scripts.index" value="${tomcat.repo.url}${webapp.alfresco.path}/service/index" />
+	<!-- Properties to access the Tomcat Manager application -->
+	<property name="webapp.manager.url" value="${tomcat.url}/manager" />
+	<property name="webapp.manager.username" value="admin" />
+	<property name="webapp.manager.password" value="" />
+
+	<!-- Define optional tasks -->
+	<!--
+	    <taskdef name="reload"  classname="org.apache.catalina.ant.ReloadTask" />
+	    <taskdef name="post"    classname="net.sf.antcontrib.net.PostTask" />
+	    -->
+
+	<!-- Additional classpath and task definitions -->
+
+	<path id="ml-ant-http.classpath">
+		<fileset dir="lib">
+			<include name="ml-ant-http-1.1.1.jar" />
+		</fileset>
+	</path>
+
+	<taskdef name="http" classname="org.missinglink.ant.task.http.HttpClientTask">
+		<classpath>
+			<path refid="ml-ant-http.classpath" />
+		</classpath>
+	</taskdef>
+
+	<!-- Clean out the build and distribution directories -->
+	<target name="clean" description="Clean out all build directories">
+		<delete dir="${build.dir}" />
+	</target>
+
+	<!-- Create required prerequisite directory structure -->
+	<target name="prepare" description="Create initial build structures">
+		<mkdir dir="${build.dir}" />
+	</target>
+
+	<path id="class.path">
+		<dirset dir="${build.dir}" />
+		<fileset dir="../lib/server" includes="**/*.jar" />
+	</path>
+
+	<target name="compile" depends="prepare" 
+		description="Compile java classes">
+		<delete dir="${classes.dir}" />
+		<mkdir dir="${classes.dir}" />
+		<javac classpathref="class.path" debug="true" srcdir="${source.dir}" destdir="${classes.dir}" 
+			includeantruntime="false" source="1.7" target="1.7">
+			<compilerarg value="-Xbootclasspath/p:class.path" />
+		</javac>
+	</target>
+
+	<target name="package-jar" depends="compile"
+		description="Build the JAR file">
+		<delete dir="${build.jar.dir}" />
+		<mkdir dir="${build.jar.dir}" />
+		<jar destfile="${jar.file}">
+			<!--
+			<fileset dir="${classes.dir}" excludes="**/custom*,**/*Test*" includes="**/*.class" />
+			-->
+			<fileset dir="${classes.dir}" excludes="**/custom*" includes="**/*.class" />
+			<fileset dir="${source.dir}" includes="**/*.properties" />
+		</jar>
+	</target>
+
+	<target name="assemble-amp-structure" depends="package-jar" 
+		description="Assemble the AMP file structure">
+		<delete dir="${build.amp.dir}" />
+		<mkdir dir="${build.amp.dir}" />
+
+		<!-- Copy properties files -->
+		<copy todir="${build.amp.dir}" file="${amp.file.properties}" failonerror="true" />
+		<!--
+		<copy todir="${build.amp.dir}" file="${amp.file.mappings}" failonerror="true" />
+-->
+		<!-- Copy config files -->
+		<mkdir dir="${build.amp.dir}/config" />
+		<copy todir="${build.amp.dir}/config">
+			<fileset dir="${config.dir}" includes="${config.includes}" excludes="${config.excludes}" />
+		</copy>
+
+		<!-- Copy jars -->
+		<mkdir dir="${build.amp.dir}/lib" />
+		<copy todir="${build.amp.dir}/lib">
+			<fileset dir="${build.jar.dir}" includes="*.jar" />
+		</copy>
+
+	</target>
+
+	<target name="package-amp" depends="assemble-amp-structure" 
+		description="Build an AMP file">
+		<delete dir="${dist.dir}" />
+		<mkdir dir="${dist.dir}" />
+		<zip destfile="${amp.file}">
+			<fileset dir="${build.amp.dir}" />
+		</zip>
+	</target>
+
+	<target name="dist-amp" depends="package-amp" 
+		description="Distribute the Module">
+		<copy overwrite="true" file="${amp.file}" todir="${tomcat.home}/../amps" />
+	</target>
+	
+	<target name="deploy-amp" depends="dist-amp"
+		description="Deploy the Module">
+		<exec executable="/bin/bash">
+			    <arg line="alfstop"/>
+		</exec>
+		<exec executable="/bin/bash">
+			    <arg line="${tomcat.home}/../bin/apply_amps_force.sh"/>
+		</exec>
+	</target>
+	
+	<target name="deploy-amp-restarted" depends="deploy-amp"
+			description="Deploy the Module and run Alfresco">
+			<exec executable="/bin/bash">
+			        <arg line="${tomcat.home}/../alfresco.sh start"/>	
+			</exec>
+	</target>
+
+
+	<target name="copy-exploded" depends="package-jar" 
+		description="Deploy config and JAR to WEB-INF" >
+		<copy overwrite="true" todir="${tomcat.home}/webapps/alfresco/WEB-INF/classes">
+			<fileset dir="${config.dir}" includes="${config.includes}" excludes="${config.excludes}"/>
+		</copy>
+		<copy overwrite="true" todir="${tomcat.home}/webapps/alfresco/WEB-INF/lib">
+			<fileset dir="${build.jar.dir}" includes="*.jar"/>
+		</copy>
+	</target>
+
+
+	<target name="update-war" depends="package-amp" 
+		description="Update the WAR file.  Set -Dwar.file=..." >
+		<echo>Installing RAA Kulturarvslyftet Alfresco AMP into WAR</echo>
+		<java dir="." fork="true" classname="org.alfresco.rsaucony grid type A5epo.module.tool.ModuleManagementTool">
+			<classpath refid="class.path" />
+			<arg line="install ${amp.file} ${war.file} -force -verbose"/>
+		</java>
+	</target>
+
+	<!--
+	        Web script reloading from Ant. These tasks use the HTTP task from 
+	        http://code.google.com/p/missing-link/.
+	    -->
+	<target name="reload-webscripts-repo" depends="" 
+		description="Reload repository webscripts">
+
+		<http url="${repo.scripts.index}"
+	               method="POST"
+	               printrequest="false"
+	               printrequestheaders="false"
+	               printresponse="false"
+	               printresponseheaders="false"
+	               expected="200"
+	               failonunexpected="true">
+			<credentials username="${repo.admin.username}" password="${repo.admin.password}" />
+			<query>
+				<parameter name="reset" value="on" />
+			</query>
+		</http>
+	</target>
+	
+	<target name="hot-update" depends="copy-exploded, reload-webscripts-repo" 
+		description="Hot deploy and reload" />
+	
+	<!--
+	        Uncomment to enable web application reloading from Ant. These tasks use the optional Tomcat
+	        ant tasks from catalina-ant.jar distributed with Tomcat.
+	        
+	        To use these tasks you will need to add catalina-ant.jar to your Ant libs and uncomment the 
+	        task definitions at the start of this file.
+	    -->
+	<!--
+	    <target name="reload-webapp-alfresco" description="Reload alfresco web application" depends="">
+	        <reload 
+	            url="${webapp.manager.url}" 
+	            username="${webapp.manager.username}" 
+	            password="${webapp.manager.password}" 
+	            path="${webapp.alfresco.path}"/>
+	    </target>
+	    -->
+
+</project>

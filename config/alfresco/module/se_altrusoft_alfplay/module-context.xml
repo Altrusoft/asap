@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
+<!--
+ * Description: 
+ * Author: Hans Höök, Altrusoft AB
+ * Created: 2013-05-27
+-->
+<beans>
+
+	<bean id="se.altrusoft.alfplay.module.initializeComponent" 
+          class="se.altrusoft.alfplay.module.InitializeComponent" 
+          parent="module.baseComponent" >
+          
+        <property name="moduleId" value="se_altrusoft_alfplay" />  
+        <property name="name" value="alfplayInitializationComponent" />
+        <property name="description" value="Component that will initialize Alfresco Play Integration Application" />
+        <property name="sinceVersion" value="0.0.1" />
+        <property name="appliesFromVersion" value="0.0.1" />
+        <!--  
+        <property name="executeOnceOnly" value="false" />
+        -->
+    </bean>
+
+   <!-- Register Altrusoft alfplaypoc models -->
+   <import resource="classpath:alfresco/module/se_altrusoft_alfplay/model/application-model-context.xml" />
+    
+   <import resource="classpath:alfresco/module/se_altrusoft_alfplay/context/service-context.xml" />
+   <import resource="classpath:alfresco/module/se_altrusoft_alfplay/context/webscript-context.xml" />
+   
+   
+
+   <!-- Register Altrusoftse alfplay actions -->
+<!--  
+   <bean id="altrusoft.se.alfplaypoc.setPocprop2Pocprop" parent="script">
+      <property name="scriptLocation">
+         <bean class="org.alfresco.repo.jscript.ClasspathScriptLocation">
+            <constructor-arg>
+               <value>alfresco/extension/script/altrusoft/alfplaypoc/setPocprop2Pocprop.js</value>
+            </constructor-arg>
+         </bean>
+      </property>
+      <property name="publicAction">
+         <value>false</value>
+      </property>
+   </bean>
+-->
+
+</beans>

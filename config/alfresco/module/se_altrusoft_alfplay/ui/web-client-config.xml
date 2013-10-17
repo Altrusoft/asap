@@ -1,0 +1,89 @@
+<!--
+ *
+ * Copyright (C) 2013 Altrusoft AB
+ *
+ * This file is part of Altrusoft Alfresco Play, ASAP
+ *
+ * ASAP is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * ASAP is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with ASAP. If not, see <http://www.gnu.org/licenses/>.
+ *
+ -->
+<!--
+ * Description: Configuration for Alfresco Play web client 
+ * Author: Hans Höök, Altrusoft AB
+ * Created: 2013-05-27
+-->
+<alfresco-config>
+
+   <!--  Configuration for the alfplay:folder aspect -->
+   <config evaluator="aspect-name" condition="alfplay:folder">
+
+      <!-- Display the alfplay:process properties -->
+      <property-sheet>
+         <separator name="sep" display-label-id="alfplay_folder_separtator" 
+         			component-generator="HeaderSeparatorGenerator"  
+         			show-in-edit-mode="false"/>
+          <show-property name="alfplay:alfplayFolderId"  
+          		show-in-edit-mode="true" />
+      </property-sheet>
+      
+   </config>
+   
+   <!--  Configuration for the alfplay:content aspect -->
+   <config evaluator="aspect-name" condition="alfplay:content">
+
+      <!-- Display the alfplay:alfplayContentId properties -->
+      <property-sheet>
+         <separator name="sep" display-label-id="alfplay_content_separator" 
+         			component-generator="HeaderSeparatorGenerator"  
+         			show-in-edit-mode="false"/>
+         	<show-property name="alfplay:alfplayContentId"  
+          		show-in-edit-mode="true" />
+         <!--  In case we have associations... /HH		
+         <show-association name="alfplay:xyz" 
+         		show-in-edit-mode="true" />
+         -->	
+      </property-sheet>
+      
+   </config>
+
+   <!--  Configures the space wizards -->
+   <config evaluator="string-compare" condition="Space Wizards">
+   
+      <!-- Allow for the creation of alfplay:space instances -->
+      <folder-types>
+         <type name="alfplay:space" icon="/images/icons/space-icon-pen.gif" />
+      </folder-types>
+   </config>
+   
+   <!-- Configures the action wizards -->
+   <config evaluator="string-compare" condition="Action Wizards">
+   
+      <!-- Allow the alfplay:folder aspect to be added and removed -->
+      <!-- Allow the alfplay:content aspect to be added and removed -->
+      <aspects>
+         <aspect name="alfplay:folder"/>
+         <aspect name="alfplay:content"/>
+      </aspects>
+      
+   </config>
+   
+   
+   <!-- Specify icon for the alfplay:space instances -->
+   <config evaluator="string-compare" condition="alfplay:space icons">
+      <icons>
+         <icon name="space-icon-pen" path="/images/icons/space-icon-pen.gif" />
+      </icons>
+   </config>
+
+</alfresco-config>

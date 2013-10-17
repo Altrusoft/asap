@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+<<<<<<< HEAD
+ *
+ * Copyright (C) 2013 Altrusoft AB
+ *
+ * This file is part of Altrusoft Alfresco Play, ASAP
+ *
+ * ASAP is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * ASAP is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with ASAP. If not, see <http://www.gnu.org/licenses/>.
+ *
+ -->
+<!--
+ * Description: Configuration for Alfresco Play, ASAP, Content Model 
+ * Author: Hans Höök, Altrusoft AB
+ * Created: 2013-05-27
+ * Status: The content model is intended to be the minimal but yet sufficient set 
+ `         of Content Types, Aspects and Associations needed to support the ASAP
+           functionality.
+           Currently alfplay:folder and alfplay:content are present as interim
+           aspects while the ASAP functionality is being developed.
+           It is unlikely they will remain for any lengthy period...
+=======
+ * Description: Configuration for Alfresco Play POC Content Model 
+ * Author: Hans Höök, Altrusoft AB
+ * Created: 2013-07-01
+>>>>>>> 8f7e704b97505b9e26781e04816170dbf9d07a5b
+-->
+<model name="alfplay:model" xmlns="http://www.alfresco.org/model/dictionary/1.0">
+
+   <!-- Metadata about the model -->
+<<<<<<< HEAD
+   <description>Altrusoft Alfresco Play, ASAP, Content Model</description>
+=======
+   <description>Alfplay Content Model</description>
+>>>>>>> 8f7e704b97505b9e26781e04816170dbf9d07a5b
+   <author>Hans Höök, Altrusoft AB</author>
+   <version>0.1</version>
+
+   <!-- Imports are required to allow references to definitions in other models -->
+   <imports>
+      <!-- Import Alfresco Dictionary Definitions -->
+      <import uri="http://www.alfresco.org/model/dictionary/1.0" prefix="d"/>
+      <!-- Import Alfresco Content Domain Model Definitions -->
+      <import uri="http://www.alfresco.org/model/content/1.0" prefix="cm"/>
+   </imports>
+
+   <!-- Define the URI and Prefix for this content model -->
+   <namespaces>
+      <namespace uri="http://www.altrusoft.se/model/alfplay/1.0" prefix="alfplay"/>
+   </namespaces>
+
+<<<<<<< HEAD
+	<!-- Content Types -->
+	
+	<!--  This is just to get us started
+	TODO: An alfplay space should be a share site, or should it? -->
+	<types>
+		<type name="alfplay:space">
+			<title>Altrusoft Alfresco Play, ASAP, Space</title>
+			<parent>cm:folder</parent>
+		</type>
+	</types>
+	
+	<!-- Aspects -->
+	
+	<!--  This is also just to get us started
+	TODO: Evolve what aspects we actually need? -->
+	<aspects>
+		<!-- Marks a folder as an Altrusoft Alfresco Play, ASAP, folder -->
+		<aspect name="alfplay:folder">
+			<title>Altrusoft Alfresco Play, ASAP, Folder</title>
+			<!--  
+			<parent>cm:folder</parent>
+			-->
+			<properties>
+				<property name="alfplay:alfplayFolderId">
+					<title>Altrusoft Alfresco Play, ASAP, Folder Id</title>
+					<type>d:text</type>
+				</property>
+			  </properties>
+		</aspect>
+
+		<!-- Marks a content item as Altrusoft Alfresco Play, ASAP, Content -->
+		<aspect name="alfplay:content">
+			<title>Altrusoft Alfresco Play, ASAP, Content</title>
+			<!-- 
+			<parent>cm:content</parent>
+			-->
+			  <properties>
+				<property name="alfplay:alfplayContentId">
+					<title>Altrusoft Alfresco Play, ASAP, Content Id</title>
+=======
+
+
+	<!-- Aspects -->
+	<aspects>
+		<!-- Marks a folder as observed -->
+		<aspect name="alfplay:observed">
+			<title>Observed</title>
+			<!-- 
+			<parent>cm:folder</parent>
+			 -->
+			<properties>
+				<property name="alfplay:observationStatus">
+					<title>Observation Status</title>
+>>>>>>> 8f7e704b97505b9e26781e04816170dbf9d07a5b
+					<type>d:text</type>
+				</property>
+			  </properties>
+		</aspect>
+	</aspects>
+
+<<<<<<< HEAD
+
+=======
+>>>>>>> 8f7e704b97505b9e26781e04816170dbf9d07a5b
+</model>

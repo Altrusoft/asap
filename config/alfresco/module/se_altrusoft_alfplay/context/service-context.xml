@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
+<!--
+ * Description: 
+ * Author: Hans Höök - Altrusoft AB
+ * Created: 2013-04-16
+-->
+<beans>
+    
+     <bean id="se.altrusoft.alfplay.repo.dictionary.dictionaryServiceExtras" 
+    	  class="se.altrusoft.alfplay.repo.dictionary.DictionaryServiceExtras"
+    	  init-method="init">
+    	  <property name="namespaceService" ref="namespaceService"/>
+       	  <property name="dictionaryService" ref="dictionaryService" />
+    </bean>
+    <bean id="se.altrusoft.alfplay.behaviour.eventTriggerService" 
+    	  class="se.altrusoft.alfplay.behaviour.EventTriggerService"
+    	  init-method="init">
+    	  <property name="nodeService" ref="nodeService"/>
+       	  <property name="policyComponent" ref="policyComponent" />
+       	  <property name="dictionaryServiceExtras" 
+       	  	ref="se.altrusoft.alfplay.repo.dictionary.dictionaryServiceExtras" />	  
+    </bean>
+   
+</beans>

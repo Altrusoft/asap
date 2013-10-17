@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
+<!--
+ * Description: Register Altrusoft Alfresco Play Integration model
+ * Author: Hans Höök, Altrusoft AB
+ * Created: 2013-07-01
+-->
+<beans>
+
+   <bean id="se.altrusoft.alfplay.model.dictionaryBootstrap" parent="dictionaryModelBootstrap"
+         depends-on="dictionaryBootstrap">
+      <property name="models">
+         <list>
+            <value>alfresco/module/se_altrusoft_alfplay/model/application-model.xml</value>
+         </list>
+      </property>
+ 	  <property name="labels">
+			<list>
+				<value>alfresco/module/se_altrusoft_alfplay/model/application-model</value>
+			</list>
+	   </property>     
+   </bean>
+
+</beans>

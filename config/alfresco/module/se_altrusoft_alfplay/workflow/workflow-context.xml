@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
+<!--
+ * Description: 
+ * Author: Hans Höök - Altrusoft AB
+ * Created: 2013-04-16
+-->
+
+<!-- set key="redeploy" to false when in production -->
+<beans>
+	<bean id="raaworkflows.workflowBootstrap" parent="workflowDeployer">
+		<property name="workflowDefinitions">
+			<list>
+				<props>
+					<prop key="engineId">activiti</prop>
+					<prop key="location">alfresco/module/se_altrusoft_alfplay/workflow/PlayPOCTest.bpmn</prop>
+					<prop key="mimetype">text/xml</prop>
+					<prop key="redeploy">true</prop>
+				</props>
+
+			</list>
+		</property>
+	</bean>
+</beans>

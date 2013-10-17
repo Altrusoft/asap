@@ -1,0 +1,35 @@
+<!--
+ *
+ * Copyright (C) 2013 Altrusoft AB
+ *
+ * This file is part of Altrusoft Alfresco Play, ASAP
+ *
+ * ASAP is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * ASAP is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with ASAP. If not, see <http://www.gnu.org/licenses/>.
+ *
+ -->
+ <!--
+ * Description: POST create an Altrusoft Alfresco Play, ASAP, Site with name
+ * Author: Hans Höök, Altrusoft
+ * Status: This is just to get something up and going 
+ *         The functionality is expected to evolve and to be rewritten in Java.
+-->
+
+<webscript>
+	<shortname>Create Altrusoft Alfresco Play, ASAP, Site</shortname>
+	<description>Create an Alfresco Play Site with name</description>
+	<url>/alfplay/site?name={name}</url>
+	<format default="json"/>
+	<family>ASAP Content Integration</family>
+	<authentication>user</authentication>
+</webscript>
