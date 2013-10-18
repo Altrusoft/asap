@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-<<<<<<< HEAD
  *
  * Copyright (C) 2013 Altrusoft AB
  *
@@ -30,20 +29,11 @@
            Currently alfplay:folder and alfplay:content are present as interim
            aspects while the ASAP functionality is being developed.
            It is unlikely they will remain for any lengthy period...
-=======
- * Description: Configuration for Alfresco Play POC Content Model 
- * Author: Hans Höök, Altrusoft AB
- * Created: 2013-07-01
->>>>>>> 8f7e704b97505b9e26781e04816170dbf9d07a5b
 -->
 <model name="alfplay:model" xmlns="http://www.alfresco.org/model/dictionary/1.0">
 
    <!-- Metadata about the model -->
-<<<<<<< HEAD
    <description>Altrusoft Alfresco Play, ASAP, Content Model</description>
-=======
-   <description>Alfplay Content Model</description>
->>>>>>> 8f7e704b97505b9e26781e04816170dbf9d07a5b
    <author>Hans Höök, Altrusoft AB</author>
    <version>0.1</version>
 
@@ -60,7 +50,6 @@
       <namespace uri="http://www.altrusoft.se/model/alfplay/1.0" prefix="alfplay"/>
    </namespaces>
 
-<<<<<<< HEAD
 	<!-- Content Types -->
 	
 	<!--  This is just to get us started
@@ -77,12 +66,21 @@
 	<!--  This is also just to get us started
 	TODO: Evolve what aspects we actually need? -->
 	<aspects>
+		<!-- Marks a folder as observed -->
+		<aspect name="alfplay:observed">
+			<title>Observed</title>
+			<properties>
+				<property name="alfplay:observationStatus">
+					<title>Observation Status</title>
+					<type>d:text</type>
+				</property>
+			  </properties>
+		</aspect>
+	
+	
 		<!-- Marks a folder as an Altrusoft Alfresco Play, ASAP, folder -->
 		<aspect name="alfplay:folder">
 			<title>Altrusoft Alfresco Play, ASAP, Folder</title>
-			<!--  
-			<parent>cm:folder</parent>
-			-->
 			<properties>
 				<property name="alfplay:alfplayFolderId">
 					<title>Altrusoft Alfresco Play, ASAP, Folder Id</title>
@@ -94,35 +92,13 @@
 		<!-- Marks a content item as Altrusoft Alfresco Play, ASAP, Content -->
 		<aspect name="alfplay:content">
 			<title>Altrusoft Alfresco Play, ASAP, Content</title>
-			<!-- 
-			<parent>cm:content</parent>
-			-->
 			  <properties>
 				<property name="alfplay:alfplayContentId">
 					<title>Altrusoft Alfresco Play, ASAP, Content Id</title>
-=======
-
-
-	<!-- Aspects -->
-	<aspects>
-		<!-- Marks a folder as observed -->
-		<aspect name="alfplay:observed">
-			<title>Observed</title>
-			<!-- 
-			<parent>cm:folder</parent>
-			 -->
-			<properties>
-				<property name="alfplay:observationStatus">
-					<title>Observation Status</title>
->>>>>>> 8f7e704b97505b9e26781e04816170dbf9d07a5b
 					<type>d:text</type>
 				</property>
 			  </properties>
 		</aspect>
 	</aspects>
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 8f7e704b97505b9e26781e04816170dbf9d07a5b
 </model>

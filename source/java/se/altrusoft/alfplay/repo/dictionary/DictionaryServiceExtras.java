@@ -19,11 +19,8 @@
  *
  */
 package se.altrusoft.alfplay.repo.dictionary;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.alfresco.service.cmr.dictionary.AssociationDefinition;
 import org.alfresco.service.cmr.dictionary.ChildAssociationDefinition;
@@ -303,50 +300,50 @@ public class DictionaryServiceExtras {
 	
 	/* Maybe nice to look at in the future /HH */
 	
-	private static final String ASSOCIATION_FILTER_OPTION_TYPE1 = "all";
-	private static final String ASSOCIATION_FILTER_OPTION_TYPE2 = "general";
-	private static final String ASSOCIATION_FILTER_OPTION_TYPE3 = "child";
-	
-	public boolean isValidAssociationFilter(String af)
-	{
-		return (af.equalsIgnoreCase(ASSOCIATION_FILTER_OPTION_TYPE1) ||
-				af.equalsIgnoreCase(ASSOCIATION_FILTER_OPTION_TYPE2) ||
-				af.equalsIgnoreCase(ASSOCIATION_FILTER_OPTION_TYPE3));
-	}
-
-	/**
-	 * @param modelname - gets the modelname as the input (modelname is without prefix ie. cm:contentmodel => where modelname = contentmodel)
-	 * @return true if valid or false
-	 */
-	public boolean isValidModelName(String modelname)
-	{
-		boolean value = false;
-		for (QName qnameObj:this.dictionaryService.getAllModels())
-		{
-			if (qnameObj.getLocalName().equalsIgnoreCase(modelname))
-			{
-				value = true;
-				break;
-			}
-		}
-		return value;
-	}
-
-
-	/**
-	 * Returns dependent collections (properties or associations)
-	 * in order that complies to order of class definitions 
-	 * @param sortedClassDefs - list of sorted class definitions
-	 * @param dependent - collections that depend on class definitions
-	 * @return collection of dependent values
-	 */
-	protected <T> Collection<T> reorderedValues(List<ClassDefinition> sortedClassDefs,  Map<QName, T> dependent)
-	{
-		Collection<T> result = new ArrayList<T>(sortedClassDefs.size());
-		for (ClassDefinition classDef : sortedClassDefs)
-		{
-			result.add(dependent.get(classDef.getName()));
-		}
-		return result;
-	}
+//	private static final String ASSOCIATION_FILTER_OPTION_TYPE1 = "all";
+//	private static final String ASSOCIATION_FILTER_OPTION_TYPE2 = "general";
+//	private static final String ASSOCIATION_FILTER_OPTION_TYPE3 = "child";
+//	
+//	public boolean isValidAssociationFilter(String af)
+//	{
+//		return (af.equalsIgnoreCase(ASSOCIATION_FILTER_OPTION_TYPE1) ||
+//				af.equalsIgnoreCase(ASSOCIATION_FILTER_OPTION_TYPE2) ||
+//				af.equalsIgnoreCase(ASSOCIATION_FILTER_OPTION_TYPE3));
+//	}
+//
+//	/**
+//	 * @param modelname - gets the modelname as the input (modelname is without prefix ie. cm:contentmodel => where modelname = contentmodel)
+//	 * @return true if valid or false
+//	 */
+//	public boolean isValidModelName(String modelname)
+//	{
+//		boolean value = false;
+//		for (QName qnameObj:this.dictionaryService.getAllModels())
+//		{
+//			if (qnameObj.getLocalName().equalsIgnoreCase(modelname))
+//			{
+//				value = true;
+//				break;
+//			}
+//		}
+//		return value;
+//	}
+//
+//
+//	/**
+//	 * Returns dependent collections (properties or associations)
+//	 * in order that complies to order of class definitions 
+//	 * @param sortedClassDefs - list of sorted class definitions
+//	 * @param dependent - collections that depend on class definitions
+//	 * @return collection of dependent values
+//	 */
+//	protected <T> Collection<T> reorderedValues(List<ClassDefinition> sortedClassDefs,  Map<QName, T> dependent)
+//	{
+//		Collection<T> result = new ArrayList<T>(sortedClassDefs.size());
+//		for (ClassDefinition classDef : sortedClassDefs)
+//		{
+//			result.add(dependent.get(classDef.getName()));
+//		}
+//		return result;
+//	}
 }

@@ -82,7 +82,7 @@
 
 	<path id="class.path">
 		<dirset dir="${build.dir}" />
-		<fileset dir="../lib/server" includes="**/*.jar" />
+		<fileset dir="${sdk.dir}/lib" includes="**/*.jar" />
 	</path>
 
 	<target name="compile" depends="prepare" 

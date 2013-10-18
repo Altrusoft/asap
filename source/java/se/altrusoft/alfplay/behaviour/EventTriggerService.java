@@ -94,28 +94,7 @@ public class EventTriggerService implements NodeServicePolicies.OnCreateChildAss
 		
 		onAddAspectCallback = new JavaBehaviour(this, "onAddAspect", 
 				NotificationFrequency.TRANSACTION_COMMIT);
-<<<<<<< HEAD
-		// TODO: This is first attempt for testing
-		//       We simply setup a listener on space
-		addNotificaitonOnCreateChild("alfplay:space");
-		
-		logger.info("Alfresco Play EventTriggerService has been initialized");
-	}
-	
-	public void addNotificaitonOnCreateChild(String parentClassName) {
-		
-		TypeOrAspectDefinition typeOrAspectDeclaration = 
-				this.dictionaryServiceExtras.getTypeOrAspectDefinition(parentClassName);
-		if (typeOrAspectDeclaration == null || ! typeOrAspectDeclaration.exists()) 
-		{
-			logger.error("No such parentClassName: "+ parentClassName);
-			// TODO: Exception or error code?
-			return;
-		}
-		logger.info("Found parentClassName: "+ parentClassName);
-=======
-		
->>>>>>> 8f7e704b97505b9e26781e04816170dbf9d07a5b
+
 		onCreateChildAssociationBehaviour = 
 				this.policyComponent.bindAssociationBehaviour(
 						NodeServicePolicies.OnCreateChildAssociationPolicy.QNAME,
