@@ -17,15 +17,12 @@
 	
 	<bean id="webscript.se.altrusoft.alfplay.node.nodecontent.post" 
       class="se.altrusoft.alfplay.node.NodeContentPost"
-<<<<<<< HEAD:config/alfresco/module/se_altrusoft_alfplay/context/webscript-context.xml
       parent="webscript">
        <property name="serviceRegistry" ref="ServiceRegistry"/>
 	</bean>
 
 	<bean id="webscript.se.altrusoft.alfplay.test.test.get" 
       class="se.altrusoft.alfplay.scripts.test.Testscript"
-=======
->>>>>>> 8f7e704b97505b9e26781e04816170dbf9d07a5b:config/alfresco/module/se_altrusoft_alfplay/context/webscript-context.xml
       parent="webscript">
        <property name="serviceRegistry" ref="ServiceRegistry"/>
 	</bean>

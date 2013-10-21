@@ -43,7 +43,7 @@ public class NodeObservChildCreationPost extends DeclarativeWebScript {
 		this.eventTriggerService.addNotificaitonOnCreateChild(nodeRef);
 		
 		status.setCode(303);
-		status.setLocation(req.getServiceContextPath()+"/alfplaypoc/node/"+nodeId);
+		status.setLocation(req.getServiceContextPath()+"/alfplay/node/"+nodeId);
 		status.setRedirect(true);
 			
 		return null;
