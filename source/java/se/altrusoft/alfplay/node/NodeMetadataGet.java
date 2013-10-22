@@ -84,8 +84,7 @@ public class NodeMetadataGet extends AbstractWebScript {
 			JSONArray jsonProps = new JSONArray();
 			for (Map.Entry<QName, Serializable> prop: props.entrySet()) {
 				JSONObject jsonProperty = new JSONObject();
-				jsonProperty.put("name", this.dictionaryServiceExtras.getSimpleQName(prop.getKey()).toString());
-				jsonProperty.put("value", prop.getValue());
+				jsonProperty.put(this.dictionaryServiceExtras.getSimpleQName(prop.getKey()).toString(), prop.getValue());
 				jsonProps.put(jsonProperty);
 			}
 			jsonResult.put("nodeId", nodeId);

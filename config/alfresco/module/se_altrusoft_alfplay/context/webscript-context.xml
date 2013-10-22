@@ -7,6 +7,11 @@
 -->
 <beans>  
 
+	<bean id="webscript.se.altrusoft.alfplay.node.search.post"
+		class="se.altrusoft.alfplay.node.NodeFreeTextQueryPost" parent="webscript">
+		<property name="serviceRegistry" ref="ServiceRegistry" />
+	</bean>
+
 	<bean id="webscript.se.altrusoft.alfplay.node.node.get" 
       class="se.altrusoft.alfplay.node.NodeMetadataGet"
       parent="webscript">
