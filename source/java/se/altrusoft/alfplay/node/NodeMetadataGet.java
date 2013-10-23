@@ -62,6 +62,7 @@ public class NodeMetadataGet extends AbstractWebScript {
 	public void execute(WebScriptRequest req, WebScriptResponse res)
 			throws IOException {		
 		// String contentType = req.getContentType(); 
+		res.setContentEncoding("UTF-8");
 
 		Map<String, String> templateArgs = req.getServiceMatch().getTemplateVars();
 		String nodeId = templateArgs.get("nodeId");

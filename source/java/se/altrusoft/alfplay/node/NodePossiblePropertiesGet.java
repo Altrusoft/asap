@@ -61,7 +61,8 @@ public class NodePossiblePropertiesGet extends AbstractWebScript {
 	@Override
 	public void execute(WebScriptRequest req, WebScriptResponse res)
 			throws IOException {		
-
+		res.setContentEncoding("UTF-8");
+		
 		Map<String, String> templateArgs = req.getServiceMatch().getTemplateVars();
 		String nodeId = templateArgs.get("nodeId");
 		if (nodeId == null) 
