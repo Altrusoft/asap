@@ -19,6 +19,7 @@
  *
  */
 package se.altrusoft.alfplay.node;
+
 /*
  * @author: Hans Höök, Altrusoft AB  
  */
@@ -40,17 +41,16 @@ import org.springframework.extensions.webscripts.WebScriptRequest;
 import org.springframework.extensions.webscripts.WebScriptResponse;
 import org.springframework.extensions.webscripts.json.JSONReader;
 
-
-
 public class NodeFreeTextQueryPost extends AbstractWebScript {
 
 	protected ServiceRegistry serviceRegistry;
 
-	/** 
-	 * Spring injected ServiceRegistry.  
-	 * @method setServiceRegistry 
-	 * @param registry 
-	 */  
+	/**
+	 * Spring injected ServiceRegistry.
+	 * 
+	 * @method setServiceRegistry
+	 * @param registry
+	 */
 	public void setServiceRegistry(ServiceRegistry registry) {
 		this.serviceRegistry = registry;
 	}
@@ -58,48 +58,50 @@ public class NodeFreeTextQueryPost extends AbstractWebScript {
 	@Override
 	public void execute(WebScriptRequest req, WebScriptResponse res)
 			throws IOException {
-		
+
 		// Read query string from JSON request body...
 		JSONReader requestReader = new JSONReader();
-		Object jsonRequest = requestReader.read(req);		
+		Object jsonRequest = requestReader.read(req);
 		JSONObject jsonObjectRequest = (JSONObject) jsonRequest;
-		String queryString=null;
+		String queryString = null;
+		String queryPath = null;
 		try {
 			queryString = (String) jsonObjectRequest.get("queryString");
+			queryPath = (String) jsonObjectRequest.get("queryPath");
 		} catch (JSONException e1) {
-			throw new WebScriptException("Unable to find someParam in JSON body");
-		}		
-		
-		// Free text search follows...
-		
-        SearchParameters sp = new SearchParameters();
-        sp.addStore(StoreRef.STORE_REF_WORKSPACE_SPACESSTORE);
-        sp.setLanguage(SearchService.LANGUAGE_LUCENE);
-        sp.setQuery("ALL:\""+queryString+"\"");
-        
-    
-        ResultSet results = null;
-        try
-        {
-            results = serviceRegistry.getSearchService().query(sp);
-            
-            // Put search result into JSON result structure...
-            JSONArray jSONResult = new JSONArray();						
-            for(ResultSetRow row : results)
-            {
-                NodeRef currentNodeRef = row.getNodeRef();
-                jSONResult.put(currentNodeRef.getId());
-            }
-          	String jsonString = jSONResult.toString();
-    		res.getWriter().write(jsonString);	
+			throw new WebScriptException(
+					"Unable to find someParam in JSON body");
 		}
-        finally
-        {
-            if(results != null)
-            {
-                results.close();
-            }
-        } 
+
+		// Free text search follows...
+		if (queryString != null) {
+			SearchParameters sp = new SearchParameters();
+			sp.addStore(StoreRef.STORE_REF_WORKSPACE_SPACESSTORE);
+			sp.setLanguage(SearchService.LANGUAGE_LUCENE);
+			sp.setQuery("+ALL:\""
+					+ queryString
+					+ "\""
+					+ ((queryPath == null) ? "" : " +PATH:\"" + queryPath
+							+ "\""));
+
+			ResultSet results = null;
+			try {
+				results = serviceRegistry.getSearchService().query(sp);
+
+				// Put search result into JSON result structure...
+				JSONArray jSONResult = new JSONArray();
+				for (ResultSetRow row : results) {
+					NodeRef currentNodeRef = row.getNodeRef();
+					jSONResult.put(currentNodeRef.getId());
+				}
+				String jsonString = jSONResult.toString();
+				res.getWriter().write(jsonString);
+			} finally {
+				if (results != null) {
+					results.close();
+				}
+			}
+		}
 	}
 
 }
