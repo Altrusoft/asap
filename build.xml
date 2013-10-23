@@ -149,10 +149,10 @@
 	<target name="deploy-amp" depends="dist-amp"
 		description="Deploy the Module">
 		<exec executable="/bin/bash">
-			    <arg line="alfstop"/>
+			    <arg line="${tomcat.home}/../alfresco.sh stop"/>
 		</exec>
 		<exec executable="/bin/bash">
-			    <arg line="${tomcat.home}/../bin/apply_amps_force.sh"/>
+			    <arg line="${tomcat.home}/../bin/apply_amps.sh"/>
 		</exec>
 	</target>
 	
