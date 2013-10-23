@@ -16,8 +16,8 @@
       class="se.altrusoft.alfplay.node.NodeMetadataGet"
       parent="webscript">
       <property name="nodeService" ref="nodeService"/>
-       <property name="dictionaryServiceExtras" 
-       	  	ref="se.altrusoft.alfplay.repo.dictionary.dictionaryServiceExtras" />
+      <property name="nodeSerializer" 
+       	  	ref="se.altrusoft.alfplay.serialize.nodeBasicJSONSerializer" />
 	</bean>
 	
 	<bean id="webscript.se.altrusoft.alfplay.node.nodecontent.post" 

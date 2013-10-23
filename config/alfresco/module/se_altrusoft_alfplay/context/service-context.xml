@@ -13,6 +13,15 @@
     	  <property name="namespaceService" ref="namespaceService"/>
        	  <property name="dictionaryService" ref="dictionaryService" />
     </bean>
+    
+    <bean id="se.altrusoft.alfplay.serialize.nodeBasicJSONSerializer" 
+      class="se.altrusoft.alfplay.serialize.NodeBasicJSONSerializer" >
+      <property name="nodeService" ref="nodeService"/>
+      <property name="dictionaryServiceExtras" 
+       	  	ref="se.altrusoft.alfplay.repo.dictionary.dictionaryServiceExtras" />
+	</bean>
+	
+    
     <bean id="se.altrusoft.alfplay.behaviour.eventTriggerService" 
     	  class="se.altrusoft.alfplay.behaviour.EventTriggerService"
     	  init-method="init">
