@@ -22,10 +22,10 @@
     </bean>
 
    <!-- Register Altrusoft alfplaypoc models -->
-   <import resource="classpath:alfresco/module/se_altrusoft_alfplay/model/application-model-context.xml" />
+   <import resource="classpath:alfresco/module/asap-repo/model/application-model-context.xml" />
     
-   <import resource="classpath:alfresco/module/se_altrusoft_alfplay/context/service-context.xml" />
-   <import resource="classpath:alfresco/module/se_altrusoft_alfplay/context/webscript-context.xml" />
+   <import resource="classpath:alfresco/module/asap-repo/context/service-context.xml" />
+   <import resource="classpath:alfresco/module/asap-repo/context/webscript-context.xml" />
    
    
 

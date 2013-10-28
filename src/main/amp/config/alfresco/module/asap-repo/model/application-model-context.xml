@@ -11,12 +11,12 @@
          depends-on="dictionaryBootstrap">
       <property name="models">
          <list>
-            <value>alfresco/module/se_altrusoft_alfplay/model/application-model.xml</value>
+            <value>alfresco/module/asap-repo/model/application-model.xml</value>
          </list>
       </property>
  	  <property name="labels">
 			<list>
-				<value>alfresco/module/se_altrusoft_alfplay/model/application-model</value>
+				<value>alfresco/module/asap-repo/model/application-model</value>
 			</list>
 	   </property>     
    </bean>

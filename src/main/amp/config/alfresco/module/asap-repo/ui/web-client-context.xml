@@ -32,7 +32,7 @@
          init-method="init">
        <property name="configs">
            <list>
-               <value>classpath:alfresco/module/se_altrusoft_alfplay/ui/web-client-config.xml</value>
+               <value>classpath:alfresco/module/asap-repo/ui/web-client-config.xml</value>
            </list>
        </property>
     </bean>
@@ -41,7 +41,7 @@
          class="org.alfresco.web.app.ResourceBundleBootstrap">
          <property name="resourceBundles">
            <list>
-               <value>alfresco.module.se_altrusoft_alfplay.ui.web-client</value>
+               <value>alfresco.module.asap-repo.ui.web-client</value>
            </list>
        </property>
     </bean>

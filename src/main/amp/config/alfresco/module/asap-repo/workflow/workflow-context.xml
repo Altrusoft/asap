@@ -13,7 +13,7 @@
 			<list>
 				<props>
 					<prop key="engineId">activiti</prop>
-					<prop key="location">alfresco/module/se_altrusoft_alfplay/workflow/PlayPOCTest.bpmn</prop>
+					<prop key="location">alfresco/module/asap-repo/workflow/PlayPOCTest.bpmn</prop>
 					<prop key="mimetype">text/xml</prop>
 					<prop key="redeploy">true</prop>
 				</props>

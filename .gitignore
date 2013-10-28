@@ -1,4 +1,3 @@
-/bin
-.directory
-.project
-build/
+.*
+alf_data_dev
+target
