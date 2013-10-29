@@ -1,57 +1,50 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
 <!--
  * Description: 
  * Author: Hans Höök - Altrusoft AB
  * Created: 2013-04-16
 -->
-<beans>  
-
-	<bean id="webscript.se.altrusoft.alfplay.node.search.post"
-		class="se.altrusoft.alfplay.node.NodeFreeTextQueryPost" parent="webscript">
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<bean id="webscript.se.altrusoft.alfplay.node.search.post" class="se.altrusoft.alfplay.node.NodeFreeTextQueryPost"
+		parent="webscript">
 		<property name="serviceRegistry" ref="ServiceRegistry" />
 	</bean>
 
-	<bean id="webscript.se.altrusoft.alfplay.node.node.get" 
-      class="se.altrusoft.alfplay.node.NodeMetadataGet"
-      parent="webscript">
-      <property name="nodeService" ref="nodeService"/>
-      <property name="nodeSerializer" 
-       	  	ref="se.altrusoft.alfplay.serialize.nodeBasicJSONSerializer" />
-	</bean>
-	
-	<bean id="webscript.se.altrusoft.alfplay.node.nodecontent.post" 
-      class="se.altrusoft.alfplay.node.NodeContentPost"
-      parent="webscript">
-       <property name="serviceRegistry" ref="ServiceRegistry"/>
+	<bean id="webscript.se.altrusoft.alfplay.node.node.get" class="se.altrusoft.alfplay.node.NodeMetadataGet"
+		parent="webscript">
+		<property name="nodeService" ref="nodeService" />
+		<property name="nodeSerializer"
+			ref="se.altrusoft.alfplay.serialize.nodeBasicJSONSerializer" />
 	</bean>
 
-	<bean id="webscript.se.altrusoft.alfplay.test.test.get" 
-      class="se.altrusoft.alfplay.scripts.test.Testscript"
-      parent="webscript">
-       <property name="serviceRegistry" ref="ServiceRegistry"/>
+	<bean id="webscript.se.altrusoft.alfplay.node.nodecontent.post"
+		class="se.altrusoft.alfplay.node.NodeContentPost" parent="webscript">
+		<property name="serviceRegistry" ref="ServiceRegistry" />
 	</bean>
-	
-	<bean id="webscript.se.altrusoft.alfplay.workflow.tasks.get" 
-      class="se.altrusoft.alfplay.workflow.TasksGet"
-      parent="webscript">
-      <property name="serviceRegistry" ref="ServiceRegistry"/>
-       <property name="taskService" ref="activitiTaskService" />
-	</bean>
-	
-	<bean id="webscript.se.altrusoft.alfplay.workflow.task.put" 
-      class="se.altrusoft.alfplay.workflow.TaskPut"
-      parent="webscript">
-      <property name="serviceRegistry" ref="ServiceRegistry"/>
-       <property name="taskService" ref="activitiTaskService" />
-	</bean>
-	
-	<bean id="webscript.se.altrusoft.alfplay.workflow.taskclaim.post" 
-      class="se.altrusoft.alfplay.workflow.TaskClaim"
-      parent="webscript">
-       <property name="taskService" ref="activitiTaskService" />
-	</bean>
-	
 
+	<bean id="webscript.se.altrusoft.alfplay.test.test.get" class="se.altrusoft.alfplay.scripts.test.Testscript"
+		parent="webscript">
+		<property name="serviceRegistry" ref="ServiceRegistry" />
+	</bean>
 
+	<bean id="webscript.se.altrusoft.alfplay.workflow.tasks.get"
+		class="se.altrusoft.alfplay.workflow.TasksGet" parent="webscript">
+		<property name="serviceRegistry" ref="ServiceRegistry" />
+		<property name="taskService" ref="activitiTaskService" />
+	</bean>
+
+	<bean id="webscript.se.altrusoft.alfplay.workflow.task.put" class="se.altrusoft.alfplay.workflow.TaskPut"
+		parent="webscript">
+		<property name="serviceRegistry" ref="ServiceRegistry" />
+		<property name="taskService" ref="activitiTaskService" />
+	</bean>
+
+	<bean id="webscript.se.altrusoft.alfplay.workflow.taskclaim.post"
+		class="se.altrusoft.alfplay.workflow.TaskClaim" parent="webscript">
+		<property name="taskService" ref="activitiTaskService" />
+	</bean>
 </beans>

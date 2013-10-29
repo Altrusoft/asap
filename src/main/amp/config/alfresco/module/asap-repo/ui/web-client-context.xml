@@ -1,5 +1,4 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
 <!--
  *
  * Copyright (C) 2013 Altrusoft AB
@@ -25,25 +24,26 @@
  * Author: Hans Höök, Altrusoft AB
  * Created: 2013-05-27
 -->
-<beans>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<bean id="se.altrusoft.alfplay.ui.WebClientConfigBootstrap" class="org.alfresco.web.config.WebClientConfigBootstrap"
+		init-method="init">
+		<property name="configs">
+			<list>
+				<value>classpath:alfresco/module/asap-repo/ui/web-client-config.xml
+				</value>
+			</list>
+		</property>
+	</bean>
 
-   <bean id="se.altrusoft.alfplay.ui.WebClientConfigBootstrap"
-         class="org.alfresco.web.config.WebClientConfigBootstrap"
-         init-method="init">
-       <property name="configs">
-           <list>
-               <value>classpath:alfresco/module/asap-repo/ui/web-client-config.xml</value>
-           </list>
-       </property>
-    </bean>
-    
-    <bean id="se.altrusoft.alfplay.ui.resourceBundleBootstrap"
-         class="org.alfresco.web.app.ResourceBundleBootstrap">
-         <property name="resourceBundles">
-           <list>
-               <value>alfresco.module.asap-repo.ui.web-client</value>
-           </list>
-       </property>
-    </bean>
-
+	<bean id="se.altrusoft.alfplay.ui.resourceBundleBootstrap" class="org.alfresco.web.app.ResourceBundleBootstrap">
+		<property name="resourceBundles">
+			<list>
+				<value>alfresco.module.asap-repo.ui.web-client</value>
+			</list>
+		</property>
+	</bean>
 </beans>

@@ -11,7 +11,7 @@
           class="se.altrusoft.alfplay.module.InitializeComponent" 
           parent="module.baseComponent" >
           
-        <property name="moduleId" value="se_altrusoft_alfplay" />  
+        <property name="moduleId" value="asap-repo" />  
         <property name="name" value="alfplayInitializationComponent" />
         <property name="description" value="Component that will initialize Alfresco Play Integration Application" />
         <property name="sinceVersion" value="0.0.1" />

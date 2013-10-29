@@ -1,24 +1,26 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
 <!--
  * Description: Register Altrusoft Alfresco Play Integration model
  * Author: Hans Höök, Altrusoft AB
  * Created: 2013-07-01
 -->
-<beans>
-
-   <bean id="se.altrusoft.alfplay.model.dictionaryBootstrap" parent="dictionaryModelBootstrap"
-         depends-on="dictionaryBootstrap">
-      <property name="models">
-         <list>
-            <value>alfresco/module/asap-repo/model/application-model.xml</value>
-         </list>
-      </property>
- 	  <property name="labels">
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<bean id="se.altrusoft.alfplay.model.dictionaryBootstrap" parent="dictionaryModelBootstrap"
+		depends-on="dictionaryBootstrap">
+		<property name="models">
+			<list>
+				<value>alfresco/module/asap-repo/model/application-model.xml</value>
+			</list>
+		</property>
+		<property name="labels">
 			<list>
 				<value>alfresco/module/asap-repo/model/application-model</value>
 			</list>
-	   </property>     
-   </bean>
+		</property>
+	</bean>
 
 </beans>

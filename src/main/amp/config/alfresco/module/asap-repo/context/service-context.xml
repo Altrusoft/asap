@@ -1,34 +1,34 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
 <!--
  * Description: 
  * Author: Hans Höök - Altrusoft AB
  * Created: 2013-04-16
 -->
-<beans>
-    
-     <bean id="se.altrusoft.alfplay.repo.dictionary.dictionaryServiceExtras" 
-    	  class="se.altrusoft.alfplay.repo.dictionary.DictionaryServiceExtras"
-    	  init-method="init">
-    	  <property name="namespaceService" ref="namespaceService"/>
-       	  <property name="dictionaryService" ref="dictionaryService" />
-    </bean>
-    
-    <bean id="se.altrusoft.alfplay.serialize.nodeBasicJSONSerializer" 
-      class="se.altrusoft.alfplay.serialize.NodeBasicJSONSerializer" >
-      <property name="nodeService" ref="nodeService"/>
-      <property name="dictionaryServiceExtras" 
-       	  	ref="se.altrusoft.alfplay.repo.dictionary.dictionaryServiceExtras" />
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<bean id="se.altrusoft.alfplay.repo.dictionary.dictionaryServiceExtras"
+		class="se.altrusoft.alfplay.repo.dictionary.DictionaryServiceExtras"
+		init-method="init">
+		<property name="namespaceService" ref="namespaceService" />
+		<property name="dictionaryService" ref="dictionaryService" />
 	</bean>
-	
-    
-    <bean id="se.altrusoft.alfplay.behaviour.eventTriggerService" 
-    	  class="se.altrusoft.alfplay.behaviour.EventTriggerService"
-    	  init-method="init">
-    	  <property name="nodeService" ref="nodeService"/>
-       	  <property name="policyComponent" ref="policyComponent" />
-       	  <property name="dictionaryServiceExtras" 
-       	  	ref="se.altrusoft.alfplay.repo.dictionary.dictionaryServiceExtras" />	  
-    </bean>
-   
+
+	<bean id="se.altrusoft.alfplay.serialize.nodeBasicJSONSerializer"
+		class="se.altrusoft.alfplay.serialize.NodeBasicJSONSerializer">
+		<property name="nodeService" ref="nodeService" />
+		<property name="dictionaryServiceExtras"
+			ref="se.altrusoft.alfplay.repo.dictionary.dictionaryServiceExtras" />
+	</bean>
+
+	<bean id="se.altrusoft.alfplay.behaviour.eventTriggerService"
+		class="se.altrusoft.alfplay.behaviour.EventTriggerService"
+		init-method="init">
+		<property name="nodeService" ref="nodeService" />
+		<property name="policyComponent" ref="policyComponent" />
+		<property name="dictionaryServiceExtras"
+			ref="se.altrusoft.alfplay.repo.dictionary.dictionaryServiceExtras" />
+	</bean>
 </beans>
