@@ -38,116 +38,105 @@ import org.alfresco.service.cmr.repository.NodeService;
 import org.alfresco.service.namespace.QName;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import se.altrusoft.alfplay.model.AlfPlayApplicationModel;
 import se.altrusoft.alfplay.repo.dictionary.DictionaryServiceExtras;
 
-public class EventTriggerService implements NodeServicePolicies.OnCreateChildAssociationPolicy, NodeServicePolicies.OnAddAspectPolicy {
-	
-//	NodeServicePolicies.OnCreateNodePolicy 
-//	@Override
-//	public void onCreateNode(ChildAssociationRef arg0) {
-//		
-//	}	
-	
+@Component
+public class EventTriggerService implements
+		NodeServicePolicies.OnCreateChildAssociationPolicy,
+		NodeServicePolicies.OnAddAspectPolicy {
+
 	/* Begin Spring Stuff */
 	/* ================== */
+	@Autowired
 	protected NodeService nodeService;
+	@Autowired
 	protected PolicyComponent policyComponent;
+	@Autowired
 	protected DictionaryServiceExtras dictionaryServiceExtras;
-	
+
 	public void setNodeService(NodeService nodeService) {
 		this.nodeService = nodeService;
 	}
-	
+
 	public void setPolicyComponent(PolicyComponent policyComponent) {
 		this.policyComponent = policyComponent;
 	}
-	
-	public void setDictionaryServiceExtras(DictionaryServiceExtras dictionaryServiceExtras) {
+
+	public void setDictionaryServiceExtras(
+			DictionaryServiceExtras dictionaryServiceExtras) {
 		this.dictionaryServiceExtras = dictionaryServiceExtras;
 	}
+
 	/* End Spring Stuff */
-	
-	// TODO: Elaborate data structure to hold whom to notify and 
-	//        which resource to monitor.
+
+	// TODO: Elaborate data structure to hold whom to notify and
+	// which resource to monitor.
 	protected Behaviour onCreateChildAssociation;
 	protected Behaviour onAddAspect;
-	
+
+	protected JavaBehaviour onCreateChildAssociationCallback = new JavaBehaviour(
+			this, "onCreateChildAssociation",
+			NotificationFrequency.TRANSACTION_COMMIT);
+	protected JavaBehaviour onAddAspectCallback = new JavaBehaviour(this,
+			"onAddAspect", NotificationFrequency.TRANSACTION_COMMIT);
+
 	@SuppressWarnings("rawtypes")
-	protected BehaviourDefinition onCreateChildAssociationBehaviour;
-	
+	protected BehaviourDefinition onCreateChildAssociationBehaviour = this.policyComponent
+			.bindAssociationBehaviour(
+					NodeServicePolicies.OnCreateChildAssociationPolicy.QNAME,
+					AlfPlayApplicationModel.OBSERVED_ASPECT_QNAME,
+					ContentModel.ASSOC_CONTAINS,
+					onCreateChildAssociationCallback);
+
 	@SuppressWarnings("rawtypes")
 	protected BehaviourDefinition onAddAspectBehaviour;
-	
-	protected JavaBehaviour onCreateChildAssociationCallback;
-	protected JavaBehaviour onAddAspectCallback;
-	
-    private static Log logger = LogFactory.getLog(EventTriggerService.class);
-    
-   
-	public void init() {
-		logger.info("Alfresco Play EventTriggerService is initializing");
-		
-		onCreateChildAssociationCallback = new JavaBehaviour(this, "onCreateChildAssociation", 
-				NotificationFrequency.TRANSACTION_COMMIT);
-		
-		onAddAspectCallback = new JavaBehaviour(this, "onAddAspect", 
-				NotificationFrequency.TRANSACTION_COMMIT);
 
-		onCreateChildAssociationBehaviour = 
-				this.policyComponent.bindAssociationBehaviour(
-						NodeServicePolicies.OnCreateChildAssociationPolicy.QNAME,
-						AlfPlayApplicationModel.OBSERVED_ASPECT_QNAME,
-						ContentModel.ASSOC_CONTAINS, 
-						onCreateChildAssociationCallback
-						);
-		
-		logger.info("Alfresco Play EventTriggerService has been initialized");
-	}
-	
+	private static Log logger = LogFactory.getLog(EventTriggerService.class);
+
 	public void addNotificaitonOnCreateChild(NodeRef nodeRef) {
-		
-		if (! this.nodeService.hasAspect(nodeRef, AlfPlayApplicationModel.OBSERVED_ASPECT_QNAME)) {
-			Map<QName,Serializable> aspectValues = new HashMap<QName,Serializable>();
-		    //aspectValues.put(PROP_QNAME_MY_PROPERTY, value);
-			this.nodeService.addAspect(nodeRef, AlfPlayApplicationModel.OBSERVED_ASPECT_QNAME, aspectValues);
-		}	
+		if (!this.nodeService.hasAspect(nodeRef,
+				AlfPlayApplicationModel.OBSERVED_ASPECT_QNAME)) {
+			Map<QName, Serializable> aspectValues = new HashMap<QName, Serializable>();
+			// aspectValues.put(PROP_QNAME_MY_PROPERTY, value);
+			this.nodeService
+					.addAspect(nodeRef,
+							AlfPlayApplicationModel.OBSERVED_ASPECT_QNAME,
+							aspectValues);
+		}
 	}
-	
+
 	public void removeNotificaitonOnCreateChild(NodeRef nodeRef) {
-		
-		if (this.nodeService.hasAspect(nodeRef, AlfPlayApplicationModel.OBSERVED_ASPECT_QNAME)) {
-			this.nodeService.removeAspect(nodeRef, AlfPlayApplicationModel.OBSERVED_ASPECT_QNAME);
-		}	
+		if (this.nodeService.hasAspect(nodeRef,
+				AlfPlayApplicationModel.OBSERVED_ASPECT_QNAME)) {
+			this.nodeService.removeAspect(nodeRef,
+					AlfPlayApplicationModel.OBSERVED_ASPECT_QNAME);
+		}
 	}
-	
-	
+
 	public void addNotificaitonOnAddAspect(String aspectSimpleQNameString) {
-		
-		ClassDefinition typeOrAspectDeclaration = this.dictionaryServiceExtras.getClassDefinition(aspectSimpleQNameString);
-		if (typeOrAspectDeclaration == null || ! typeOrAspectDeclaration.isAspect() ) 
-		{
-			logger.error("No such aspectClassName: "+ aspectSimpleQNameString);
+		ClassDefinition typeOrAspectDeclaration = this.dictionaryServiceExtras
+				.getClassDefinition(aspectSimpleQNameString);
+		if (typeOrAspectDeclaration == null
+				|| !typeOrAspectDeclaration.isAspect()) {
+			logger.error("No such aspectClassName: " + aspectSimpleQNameString);
 			// TODO: Exception or error code?
 			return;
-			
 		}
 		// TODO: Check that aspectQName is indeed aspect...
-		onAddAspectBehaviour = 
-				this.policyComponent.bindClassBehaviour(
-						NodeServicePolicies.OnAddAspectPolicy.QNAME,
-						typeOrAspectDeclaration.getName(),
-						onAddAspectCallback
-						);
-
+		onAddAspectBehaviour = this.policyComponent.bindClassBehaviour(
+				NodeServicePolicies.OnAddAspectPolicy.QNAME,
+				typeOrAspectDeclaration.getName(), onAddAspectCallback);
 	}
 
 	@Override
 	public void onCreateChildAssociation(ChildAssociationRef arg0, boolean arg1) {
 		// TODO: Notify someone ....
 		logger.debug("Child created...");
-		
+
 	}
 
 	@Override
@@ -155,5 +144,4 @@ public class EventTriggerService implements NodeServicePolicies.OnCreateChildAss
 		// TODO: Notify someone ....
 		logger.debug("Aspect added...");
 	}
-
 }

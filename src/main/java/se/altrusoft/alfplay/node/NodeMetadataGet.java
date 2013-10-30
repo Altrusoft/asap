@@ -21,41 +21,44 @@
 package se.altrusoft.alfplay.node;
 
 import java.io.IOException;
-import java.util.Map;
+
+import nl.runnable.alfresco.webscripts.annotations.HttpMethod;
+import nl.runnable.alfresco.webscripts.annotations.Uri;
+import nl.runnable.alfresco.webscripts.annotations.UriVariable;
+import nl.runnable.alfresco.webscripts.annotations.WebScript;
 
 import org.alfresco.service.cmr.repository.NodeRef;
 import org.alfresco.service.cmr.repository.NodeService;
 import org.alfresco.service.cmr.repository.StoreRef;
-import org.springframework.extensions.webscripts.AbstractWebScript;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.extensions.webscripts.WebScriptException;
-import org.springframework.extensions.webscripts.WebScriptRequest;
 import org.springframework.extensions.webscripts.WebScriptResponse;
+import org.springframework.stereotype.Component;
 
-import se.altrusoft.alfplay.repo.dictionary.DictionaryServiceExtras;
 import se.altrusoft.alfplay.serialize.NodeSerializer;
 
-public class NodeMetadataGet extends AbstractWebScript {
-
+@Component
+@WebScript(description = "Retrieve metadata from a node")
+public class NodeMetadataGet {
+	@Autowired
 	protected NodeService nodeService;
 
 	public void setNodeService(NodeService nodeService) {
 		this.nodeService = nodeService;
 	}
 
+	@Autowired
 	private NodeSerializer nodeSerializer;
 
 	public void setNodeSerializer(NodeSerializer nodeSerializer) {
 		this.nodeSerializer = nodeSerializer;
 	}
 
-	@Override
-	public void execute(WebScriptRequest req, WebScriptResponse res)
+	@Uri(method = HttpMethod.GET, value = "/alfplay/node/{nodeId}")
+	public void execute(@UriVariable String nodeId, WebScriptResponse res)
 			throws IOException {
 		res.setContentEncoding("UTF-8");
 
-		Map<String, String> templateArgs = req.getServiceMatch()
-				.getTemplateVars();
-		String nodeId = templateArgs.get("nodeId");
 		if (nodeId == null) {
 			throw new WebScriptException("No nodeId provided");
 		}
@@ -68,5 +71,4 @@ public class NodeMetadataGet extends AbstractWebScript {
 
 		res.getWriter().write(nodeSerializer.serialize(nodeRef));
 	}
-
 }

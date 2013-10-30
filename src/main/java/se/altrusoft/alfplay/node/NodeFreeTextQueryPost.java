@@ -25,6 +25,10 @@ package se.altrusoft.alfplay.node;
  */
 import java.io.IOException;
 
+import nl.runnable.alfresco.webscripts.annotations.HttpMethod;
+import nl.runnable.alfresco.webscripts.annotations.Uri;
+import nl.runnable.alfresco.webscripts.annotations.WebScript;
+
 import org.alfresco.service.ServiceRegistry;
 import org.alfresco.service.cmr.repository.NodeRef;
 import org.alfresco.service.cmr.repository.StoreRef;
@@ -35,14 +39,18 @@ import org.alfresco.service.cmr.search.SearchService;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.extensions.webscripts.AbstractWebScript;
 import org.springframework.extensions.webscripts.WebScriptException;
 import org.springframework.extensions.webscripts.WebScriptRequest;
 import org.springframework.extensions.webscripts.WebScriptResponse;
 import org.springframework.extensions.webscripts.json.JSONReader;
+import org.springframework.stereotype.Component;
 
+@Component
+@WebScript(description = "POST: Get set of node refs based on a free text search")
 public class NodeFreeTextQueryPost extends AbstractWebScript {
-
+	@Autowired
 	protected ServiceRegistry serviceRegistry;
 
 	/**
@@ -56,6 +64,7 @@ public class NodeFreeTextQueryPost extends AbstractWebScript {
 	}
 
 	@Override
+	@Uri(method = HttpMethod.POST, value = "/alfplay/node/search")
 	public void execute(WebScriptRequest req, WebScriptResponse res)
 			throws IOException {
 
@@ -103,5 +112,4 @@ public class NodeFreeTextQueryPost extends AbstractWebScript {
 			}
 		}
 	}
-
 }

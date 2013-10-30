@@ -12,11 +12,14 @@ import org.alfresco.service.namespace.QName;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.extensions.webscripts.WebScriptException;
+import org.springframework.stereotype.Component;
 
 import se.altrusoft.alfplay.repo.dictionary.DictionaryServiceExtras;
 import se.altrusoft.alfplay.repo.dictionary.SimpleQName;
 
+@Component
 public class NodeBasicJSONSerializer implements NodeSerializer {
 
 	private static final QName CM_CONTENT = QName
@@ -26,8 +29,10 @@ public class NodeBasicJSONSerializer implements NodeSerializer {
 	private static final QName SYS_STORE_PROTOCOL = QName
 			.createQName("{http://www.alfresco.org/model/system/1.0}store-protocol");
 
+	@Autowired
 	protected NodeService nodeService;
 
+	@Autowired
 	protected DictionaryServiceExtras dictionaryServiceExtras;
 
 	public void setNodeService(NodeService nodeService) {
