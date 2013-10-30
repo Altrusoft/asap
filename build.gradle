@@ -24,7 +24,7 @@ version = "1.0.SNAPSHOT"
 dependencies { 
   compile "org.json:json:20090211"
   compile "org.springframework:spring-context:3.0.5.RELEASE"
-  //compile "org.activiti:activiti-engine:5.13-alf-20130918"
+  compile "org.activiti:activiti-engine:5.13-alf-20130918"
 }
 
 jar {
@@ -34,6 +34,7 @@ jar {
     instruction "Bundle-DocURL", "https://github.com/Altrusoft/asap"
   }
 }
+
 installBundle {
   // Install the bundle through the Dynamic Extensions REST API
   toRepository username: "admin", password: "admin"
