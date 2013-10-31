@@ -64,6 +64,14 @@ public class EventTriggerService implements
 
 	public void setPolicyComponent(PolicyComponent policyComponent) {
 		this.policyComponent = policyComponent;
+
+		onCreateChildAssociationBehaviour = this.policyComponent
+				.bindAssociationBehaviour(
+						NodeServicePolicies.OnCreateChildAssociationPolicy.QNAME,
+						AlfPlayApplicationModel.OBSERVED_ASPECT_QNAME,
+						ContentModel.ASSOC_CONTAINS,
+						onCreateChildAssociationCallback);
+
 	}
 
 	public void setDictionaryServiceExtras(
@@ -78,24 +86,22 @@ public class EventTriggerService implements
 	protected Behaviour onCreateChildAssociation;
 	protected Behaviour onAddAspect;
 
-	protected JavaBehaviour onCreateChildAssociationCallback = new JavaBehaviour(
-			this, "onCreateChildAssociation",
-			NotificationFrequency.TRANSACTION_COMMIT);
-	protected JavaBehaviour onAddAspectCallback = new JavaBehaviour(this,
-			"onAddAspect", NotificationFrequency.TRANSACTION_COMMIT);
+	protected JavaBehaviour onCreateChildAssociationCallback;
+	protected JavaBehaviour onAddAspectCallback;
 
-	@SuppressWarnings("rawtypes")
-	protected BehaviourDefinition onCreateChildAssociationBehaviour = this.policyComponent
-			.bindAssociationBehaviour(
-					NodeServicePolicies.OnCreateChildAssociationPolicy.QNAME,
-					AlfPlayApplicationModel.OBSERVED_ASPECT_QNAME,
-					ContentModel.ASSOC_CONTAINS,
-					onCreateChildAssociationCallback);
-
-	@SuppressWarnings("rawtypes")
-	protected BehaviourDefinition onAddAspectBehaviour;
+	protected BehaviourDefinition<?> onCreateChildAssociationBehaviour;
+	protected BehaviourDefinition<?> onAddAspectBehaviour;
 
 	private static Log logger = LogFactory.getLog(EventTriggerService.class);
+
+	public EventTriggerService() {
+		onCreateChildAssociationCallback = new JavaBehaviour(this,
+				"onCreateChildAssociation",
+				NotificationFrequency.TRANSACTION_COMMIT);
+
+		onAddAspectCallback = new JavaBehaviour(this, "onAddAspect",
+				NotificationFrequency.TRANSACTION_COMMIT);
+	}
 
 	public void addNotificaitonOnCreateChild(NodeRef nodeRef) {
 		if (!this.nodeService.hasAspect(nodeRef,

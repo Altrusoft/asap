@@ -29,7 +29,6 @@ import nl.runnable.alfresco.webscripts.annotations.HttpMethod;
 import nl.runnable.alfresco.webscripts.annotations.Uri;
 import nl.runnable.alfresco.webscripts.annotations.WebScript;
 
-import org.alfresco.service.ServiceRegistry;
 import org.alfresco.service.cmr.repository.NodeRef;
 import org.alfresco.service.cmr.repository.StoreRef;
 import org.alfresco.service.cmr.search.ResultSet;
@@ -51,16 +50,16 @@ import org.springframework.stereotype.Component;
 @WebScript(description = "POST: Get set of node refs based on a free text search")
 public class NodeFreeTextQueryPost extends AbstractWebScript {
 	@Autowired
-	protected ServiceRegistry serviceRegistry;
+	protected SearchService searchService;
 
 	/**
-	 * Spring injected ServiceRegistry.
+	 * Spring injected SearchService.
 	 * 
-	 * @method setServiceRegistry
-	 * @param registry
+	 * @method setSearchService
+	 * @param searchService
 	 */
-	public void setServiceRegistry(ServiceRegistry registry) {
-		this.serviceRegistry = registry;
+	public void setSearchService(SearchService searchService) {
+		this.searchService = searchService;
 	}
 
 	@Override
@@ -95,7 +94,7 @@ public class NodeFreeTextQueryPost extends AbstractWebScript {
 
 			ResultSet results = null;
 			try {
-				results = serviceRegistry.getSearchService().query(sp);
+				results = searchService.query(sp);
 
 				// Put search result into JSON result structure...
 				JSONArray jSONResult = new JSONArray();
