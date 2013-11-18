@@ -39,7 +39,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.extensions.webscripts.AbstractWebScript;
 import org.springframework.extensions.webscripts.WebScriptException;
 import org.springframework.extensions.webscripts.WebScriptRequest;
 import org.springframework.extensions.webscripts.WebScriptResponse;
@@ -48,7 +47,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @WebScript(description = "POST: Get set of node refs based on a free text search")
-public class NodeFreeTextQueryPost extends AbstractWebScript {
+public class NodeFreeTextQueryPost {
 	@Autowired
 	protected SearchService searchService;
 
@@ -62,14 +61,13 @@ public class NodeFreeTextQueryPost extends AbstractWebScript {
 		this.searchService = searchService;
 	}
 
-	@Override
 	@Uri(method = HttpMethod.POST, value = "/alfplay/node/search")
-	public void execute(WebScriptRequest req, WebScriptResponse res)
+	public void query(WebScriptRequest request, WebScriptResponse response)
 			throws IOException {
 
 		// Read query string from JSON request body...
 		JSONReader requestReader = new JSONReader();
-		Object jsonRequest = requestReader.read(req);
+		Object jsonRequest = requestReader.read(request);
 		JSONObject jsonObjectRequest = (JSONObject) jsonRequest;
 		String queryString = null;
 		String queryPath = null;
@@ -103,7 +101,7 @@ public class NodeFreeTextQueryPost extends AbstractWebScript {
 					jSONResult.put(currentNodeRef.getId());
 				}
 				String jsonString = jSONResult.toString();
-				res.getWriter().write(jsonString);
+				response.getWriter().write(jsonString);
 			} finally {
 				if (results != null) {
 					results.close();

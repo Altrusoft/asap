@@ -19,83 +19,57 @@
  *
  */
 package se.altrusoft.alfplay.workflow;
-  
+
 import java.io.IOException;
-import java.util.Map;
+
+import nl.runnable.alfresco.webscripts.annotations.HttpMethod;
+import nl.runnable.alfresco.webscripts.annotations.Uri;
+import nl.runnable.alfresco.webscripts.annotations.UriVariable;
+import nl.runnable.alfresco.webscripts.annotations.WebScript;
 
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
-import org.alfresco.service.ServiceRegistry;
-import org.alfresco.service.cmr.repository.NodeService;
-import org.alfresco.service.cmr.search.SearchService;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.springframework.extensions.webscripts.AbstractWebScript;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.extensions.webscripts.WebScriptException;
 import org.springframework.extensions.webscripts.WebScriptRequest;
 import org.springframework.extensions.webscripts.WebScriptResponse;
 import org.springframework.extensions.webscripts.json.JSONReader;
+import org.springframework.stereotype.Component;
 
-public class TaskPut extends AbstractWebScript {
-
-	protected ServiceRegistry serviceRegistry;
-	protected NodeService nodeService;
-	protected SearchService searchService;	
+@Component
+@WebScript(value = "PUT an Activiti Task", description = "PUT an Activiti Task")
+public class TaskPut {
+	@Autowired
 	protected TaskService taskService;
 
-	/** 
-	 * Spring injected ServiceRegistry.  
-	 * @method setServiceRegistry 
-	 * @param registry 
-	 */  
-	public void setServiceRegistry(ServiceRegistry registry) {
-		this.serviceRegistry = registry;
-		this.nodeService = registry.getNodeService();
-		this.searchService = registry.getSearchService();
-	}
-	
-	/** 
-	 * Spring injected TaskService.  
-	 * @method setTaskService 
-	 * @param taskService 
-	 */  
+	/**
+	 * Spring injected TaskService.
+	 * 
+	 * @method setTaskService
+	 * @param taskService
+	 */
 	public void setTaskService(TaskService taskService) {
 		this.taskService = taskService;
 
 	}
 
-	@Override
-	public void execute(WebScriptRequest req, WebScriptResponse res)
-			throws IOException {
-		String contentType = req.getContentType(); 
+	@Uri(method = HttpMethod.PUT, value = "/alfplay/task/{taskId}")
+	public void addTask(@UriVariable String taskId, WebScriptRequest request,
+			WebScriptResponse response) throws IOException {
+		String contentType = request.getContentType();
 		// TODOD: test for JSON ...
 		JSONReader requestReader = new JSONReader();
-		Object jsonRequest = requestReader.read(req);
-		/*
-		 * JSONObject jsonObjectRequest = new JSONObject(); JSONArray
-		 * jsonArrayRequest = new JSONArray(); if (jsonRequest instanceof
-		 * JSONObject) { jsonObjectRequest = (JSONObject) jsonRequest; } else if
-		 * (jsonRequest instanceof JSONArray ) { jsonArrayRequest = (JSONArray)
-		 * jsonRequest; }
-		 */
+		Object jsonRequest = requestReader.read(request);
 
 		JSONObject jsonObjectRequest = (JSONObject) jsonRequest;
-		
-		Map<String, String> templateArgs =
-				req.getServiceMatch().getTemplateVars();
-		String taskId = templateArgs.get("id");
+
 		if (taskId == null) {
 			throw new WebScriptException("Unable to find id in URL");
 		}
-		/*
-		try {
-			taskId = (String) jsonObjectRequest.get("id");
-		} catch (JSONException e1) {
-			throw new WebScriptException("Unable to find id in JSON body");
-		}
-		*/
-		
+
 		TaskQuery taskQuery = taskService.createTaskQuery().taskId(taskId);
 		Task task = taskQuery.singleResult();
 		if (task == null) {
@@ -123,16 +97,15 @@ public class TaskPut extends AbstractWebScript {
 			JSONTask.put("assignee", task.getAssignee());
 			JSONTask.put("owner", task.getOwner());
 			JSONTask.put("processDefinitionId", task.getProcessDefinitionId());
-			
+
 			JSONResult.put("task", JSONTask);
 
 			String jsonString = JSONResult.toString();
-			res.getWriter().write(jsonString);
+			response.getWriter().write(jsonString);
 		}
 
 		catch (JSONException e) {
 			throw new WebScriptException("Unable to serialize JSON");
 		}
 	}
-
 }

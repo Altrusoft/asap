@@ -36,6 +36,7 @@ import org.alfresco.service.cmr.repository.StoreRef;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.extensions.webscripts.WebScriptException;
 import org.springframework.extensions.webscripts.WebScriptRequest;
+import org.springframework.extensions.webscripts.WebScriptResponse;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -55,7 +56,8 @@ public class NodeContentPost {
 	}
 
 	@Uri(method = HttpMethod.POST, value = "/alfplay/node/{nodeId}/content")
-	protected void executeImpl(@UriVariable String nodeId, WebScriptRequest req) {
+	protected void postContent(@UriVariable String nodeId,
+			WebScriptRequest request, WebScriptResponse response) {
 		if (nodeId == null)
 			throw new WebScriptException("No nodeId provided");
 
@@ -68,7 +70,7 @@ public class NodeContentPost {
 		// Write content from the request to the node
 		ContentWriter writer = contentService.getWriter(nodeRef,
 				ContentModel.PROP_CONTENT, true);
-		InputStream inputStream = req.getContent().getInputStream();
+		InputStream inputStream = request.getContent().getInputStream();
 		writer.putContent(inputStream);
 	}
 }

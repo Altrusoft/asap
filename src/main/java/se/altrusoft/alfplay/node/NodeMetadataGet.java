@@ -55,9 +55,9 @@ public class NodeMetadataGet {
 	}
 
 	@Uri(method = HttpMethod.GET, value = "/alfplay/node/{nodeId}")
-	public void execute(@UriVariable String nodeId, WebScriptResponse res)
-			throws IOException {
-		res.setContentEncoding("UTF-8");
+	public void retrieveMetadata(@UriVariable String nodeId,
+			WebScriptResponse response) throws IOException {
+		response.setContentEncoding("UTF-8");
 
 		if (nodeId == null) {
 			throw new WebScriptException("No nodeId provided");
@@ -69,6 +69,6 @@ public class NodeMetadataGet {
 			throw new WebScriptException("No such node: " + nodeId);
 		}
 
-		res.getWriter().write(nodeSerializer.serialize(nodeRef));
+		response.getWriter().write(nodeSerializer.serialize(nodeRef));
 	}
 }
