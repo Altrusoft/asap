@@ -19,98 +19,56 @@
  *
  */
 package se.altrusoft.alfplay.node;
-  
+
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
+
+import nl.runnable.alfresco.webscripts.annotations.HttpMethod;
+import nl.runnable.alfresco.webscripts.annotations.Uri;
+import nl.runnable.alfresco.webscripts.annotations.UriVariable;
+import nl.runnable.alfresco.webscripts.annotations.WebScript;
 
 import org.alfresco.model.ContentModel;
-import org.alfresco.service.ServiceRegistry;
 import org.alfresco.service.cmr.repository.ContentService;
 import org.alfresco.service.cmr.repository.ContentWriter;
 import org.alfresco.service.cmr.repository.NodeRef;
 import org.alfresco.service.cmr.repository.NodeService;
 import org.alfresco.service.cmr.repository.StoreRef;
-import org.alfresco.service.cmr.search.SearchService;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.springframework.extensions.webscripts.Cache;
-import org.springframework.extensions.webscripts.DeclarativeWebScript;
-import org.springframework.extensions.webscripts.Status;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.extensions.webscripts.WebScriptException;
 import org.springframework.extensions.webscripts.WebScriptRequest;
+import org.springframework.stereotype.Component;
 
-public class NodeContentPost extends DeclarativeWebScript {
+@Component
+@WebScript(description = "Post content of a node")
+public class NodeContentPost {
+	@Autowired
+	private NodeService nodeService;
+	@Autowired
+	private ContentService contentService;
 
-	protected ServiceRegistry serviceRegistry;
-	protected NodeService nodeService;
-	protected SearchService searchService;	
-	protected ContentService contentService;
-
-	/** 
-	 * Spring injected ServiceRegistry.  
-	 * @method setServiceRegistry 
-	 * @param registry 
-	 */  
-	public void setServiceRegistry(ServiceRegistry registry) {
-		this.serviceRegistry = registry;
-		this.nodeService = registry.getNodeService();
-		this.searchService = registry.getSearchService();
-		this.contentService =registry.getContentService();
+	public void setNodeService(NodeService nodeService) {
+		this.nodeService = nodeService;
 	}
-	
-	// http://wiki.alfresco.com/wiki/NodeRef_cookbook#Getting_a_file_name_from_a_NodeRef
-	
-	//@Override
-	//public void execute(WebScriptRequest req, WebScriptResponse res)
-	//		throws IOException {
-	@Override
-	protected Map<String, Object> executeImpl(WebScriptRequest req,
-				Status status, Cache cache) {		
-		// String contentType = req.getContentType(); 
-		
-		Map<String, String> templateArgs = req.getServiceMatch().getTemplateVars();
-		String nodeId = templateArgs.get("nodeId");
-		if (nodeId == null) throw new WebScriptException("No nodeId provided");
-		
-		NodeRef nodeRef = new NodeRef(StoreRef.STORE_REF_WORKSPACE_SPACESSTORE, nodeId);
-		if (! this.nodeService.exists(nodeRef)) 
+
+	public void setContentService(ContentService contentService) {
+		this.contentService = contentService;
+	}
+
+	@Uri(method = HttpMethod.POST, value = "/alfplay/node/{nodeId}/content")
+	protected void executeImpl(@UriVariable String nodeId, WebScriptRequest req) {
+		if (nodeId == null)
+			throw new WebScriptException("No nodeId provided");
+
+		// Locate the node
+		NodeRef nodeRef = new NodeRef(StoreRef.STORE_REF_WORKSPACE_SPACESSTORE,
+				nodeId);
+		if (!this.nodeService.exists(nodeRef))
 			throw new WebScriptException("No such node: " + nodeId);
-		
-		
-		ContentWriter writer = contentService.getWriter(nodeRef, ContentModel.PROP_CONTENT, true);
-		//writer.setMimetype(MimetypeMap.MIMETYPE_BINARY);
+
+		// Write content from the request to the node
+		ContentWriter writer = contentService.getWriter(nodeRef,
+				ContentModel.PROP_CONTENT, true);
 		InputStream inputStream = req.getContent().getInputStream();
 		writer.putContent(inputStream);
-		//writer.putContent("Hello dummy!");
-		
-		//ContentReader reader = contentService.getReader(nodeRef, ContentModel.PROP_CONTENT);
-		
-		status.setCode(303);
-		status.setLocation(req.getServiceContextPath()+"/alfplay/node/"+nodeId);
-		status.setRedirect(true);
-		
-		// we should never have to worry about the model ...???
-		
-		Map<String, Object> model = new HashMap<String, Object>();
-		JSONObject JSONResult = new JSONObject();
-		try {			
-			JSONResult.put("dummy", "dummy");
-
-			String jsonString = JSONResult.toString();
-			model.put("json", jsonString);
-		}
-
-		catch (JSONException e) {
-			throw new WebScriptException("Unable to serialize JSON");
-		}	
-		return model;
 	}
-	
-	public NodeRef getNode(String nodeId) {
-		NodeRef nodeRef = new NodeRef("workspace://SpacesStore/" + nodeId);
-		return nodeRef;
-	}
-
-
 }

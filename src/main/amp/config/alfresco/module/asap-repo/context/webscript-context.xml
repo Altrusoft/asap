@@ -9,11 +9,6 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-	<bean id="webscript.se.altrusoft.alfplay.node.nodecontent.post"
-		class="se.altrusoft.alfplay.node.NodeContentPost" parent="webscript">
-		<property name="serviceRegistry" ref="ServiceRegistry" />
-	</bean>
-
 	<bean id="webscript.se.altrusoft.alfplay.test.test.get" class="se.altrusoft.alfplay.scripts.test.Testscript"
 		parent="webscript">
 		<property name="serviceRegistry" ref="ServiceRegistry" />
